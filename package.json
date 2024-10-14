@@ -1,0 +1,27 @@
+{
+  "name": "practica_crud_typescript",
+  "version": "1.0.0",
+  "main": "dist/app.js",
+  "scripts": {
+    "start": "nodemon dist/app.js",
+    "build": "tsc",
+    "dev": "ts-node app.ts",
+    "clean": "rm -rf dist",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint 'src/**/*.{js,ts}' --fix"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "Un CRUD hecho con TYPESCRIPT",
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.3"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1"
+  }
+}
