@@ -3,6 +3,8 @@ const express = require('express');
 const app = express();
 // Cors
 import cors from 'cors';
+// Importamos la conexion a la BD mongodb
+import { dbConnection } from '../database/config';
 
 // options
 interface Options {
@@ -27,12 +29,19 @@ export class Server {
 
 
 
+        // conexion a la base de datos
+        this.databaseConnection();
         // middlewares
         this.middlewares();
         // Routes
         this.routes();
 
     }
+    // conexion a la base de datos
+    async databaseConnection() {
+        await dbConnection();
+    }
+    // middlewares
     middlewares() {
         // Cors
         this.app.use( cors() );
