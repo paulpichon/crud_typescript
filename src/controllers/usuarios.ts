@@ -1,4 +1,3 @@
-
 // GET
 const usuariosGet = (req = Request, res = Response) => {
     res.json({
@@ -6,7 +5,8 @@ const usuariosGet = (req = Request, res = Response) => {
     })
 }
 // POST
-const usuariosPost = (req = Request, res = Response) => {
+const usuariosPost = async (req = Request, res = Response) => {
+
     res.json({
       msg: 'POST - API'
     })
