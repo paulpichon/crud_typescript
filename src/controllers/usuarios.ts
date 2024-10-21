@@ -1,3 +1,5 @@
+// import bcryptjs
+import bcryptjs from "bcryptjs";
 // imporatmos Usuario schema
 import Usuario from "../models/usuario";
 // Request, Response
@@ -20,9 +22,13 @@ const usuariosPost = async (req = request, res = response) => {
     // Utilizamos UsuarioInterface para decirle al objeto que debe tener esos types
     // se usa para asegurarse de que un objeto en tiempo de ejecución cumpla con esa estructura.
     const {nombre, correo, password, rol}: UsuarioInterface = req.body;
-  
     // crear un usuario
     const usuario = new Usuario<UsuarioInterface>({nombre, correo, password, rol});
+    // TODO: encriptar la password
+    if (password) {
+      const salt = bcryptjs.genSaltSync(10);
+      usuario.password = bcryptjs.hashSync(password, salt);
+    }
     // guardar en la BD
     await usuario.save();
     // respuesta
