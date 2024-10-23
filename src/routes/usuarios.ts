@@ -4,8 +4,6 @@ const { Router } = require("express");
 const router = Router();
 // Express validator
 import { check } from "express-validator";
-//helpers 
-import { validarCampos } from "../helpers/validar-campos";
 // 
 import { 
         usuariosGet,
@@ -13,6 +11,10 @@ import {
         usuariosPut,
         usuariosDelete
     } from "../controllers/usuarios";
+// validar correo de usuario 
+import { validarCorreo } from "../helpers/validar-correo-usuario";
+//helpers 
+import { validarCampos } from "../helpers/validar-campos";
 
 // GET
 router.get('/', usuariosGet);
@@ -20,6 +22,9 @@ router.get('/', usuariosGet);
 router.post('/', [
     // Validar el nombre, no este vacio y sea string
     check('nombre', 'El nombre es obligatorio').notEmpty(),
+    // validar el correo del usuario
+    // que sea unico, que sea un correo valido
+    check('correo').custom( validarCorreo ),
     // Validar los campos
     validarCampos,
 ], usuariosPost);

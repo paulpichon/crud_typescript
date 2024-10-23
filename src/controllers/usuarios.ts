@@ -26,7 +26,7 @@ const usuariosPost = async (req: Request, res: Response) => {
     const usuario = new Usuario<UsuarioInterface>({nombre, correo, password, rol});
     // encriptar la contraseña
     if ( password ) {
-      const salt = bcryptjs.genSaltSync(10);
+      const salt: string = bcryptjs.genSaltSync(10);
       usuario.password = bcryptjs.hashSync(password, salt);
     }
     // guardar en la BD
