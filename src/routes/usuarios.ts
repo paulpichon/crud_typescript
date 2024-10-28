@@ -23,9 +23,11 @@ router.post('/', [
     // Validar el nombre, no este vacio y sea string
     check('nombre', 'El nombre es obligatorio').notEmpty(),
     // validar el correo
-    check('correo', 'El email no es valido').isEmail(),
+    check('correo', 'El email no es valido').normalizeEmail().isEmail(),
     // que sea unico, que sea un correo valido
     check('correo').custom( validarCorreo ),
+    // validar el password
+    check('password', 'El password es obligatorio: {min: 6 caracteres}').trim().notEmpty().isLength({ min: 6 }),
     // Validar los campos
     validarCampos,
 ], usuariosPost);
