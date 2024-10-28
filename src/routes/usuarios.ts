@@ -22,7 +22,8 @@ router.get('/', usuariosGet);
 router.post('/', [
     // Validar el nombre, no este vacio y sea string
     check('nombre', 'El nombre es obligatorio').notEmpty(),
-    // validar el correo del usuario
+    // validar el correo
+    check('correo', 'El email no es valido').isEmail(),
     // que sea unico, que sea un correo valido
     check('correo').custom( validarCorreo ),
     // Validar los campos
