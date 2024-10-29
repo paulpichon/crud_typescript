@@ -31,7 +31,7 @@ const usuarioSchema = new Schema<UsuarioInterface>({
     rol: {
         type: String,
         required: [true, 'El rol es obligatorio'],
-        enum: ['ADMIN_ROL', 'VENTAS_ROL']
+        enum: ['SUPER_ADMIN_ROLE','ADMIN_ROL', 'VENTAS_ROL']
     },
     estado: {
         type: Boolean,
