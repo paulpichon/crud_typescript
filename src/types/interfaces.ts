@@ -12,8 +12,13 @@ interface UsuarioInterface {
     rol: 'ADMIN_ROL' | 'VENTAS_ROL';
     estado?: boolean;
 }
+// Interface de Roles
+interface RolesUsuario {
+    rol: string;
+}
 
 // Exports
 export {
-    UsuarioInterface
+    UsuarioInterface,
+    RolesUsuario
 }
