@@ -39,9 +39,9 @@ router.post('/', [
     validarCampos,
 ], usuariosPost);
 // PUT
-router.put('/', usuariosPut);
+router.put('/:id', usuariosPut);
 // DELETE
-router.delete('/', usuariosDelete);
+router.delete('/:id', usuariosDelete);
 
 
 // exports
