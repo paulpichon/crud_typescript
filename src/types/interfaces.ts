@@ -1,6 +1,11 @@
 // Interfaces 
+// importamos mongoose
+import mongoose from "mongoose";
+
+
 // interface Usuario
 interface UsuarioInterface {
+    _id?: mongoose.Schema.Types.ObjectId, 
     nombre: string;
     apellidos?: string;
     correo: string;
