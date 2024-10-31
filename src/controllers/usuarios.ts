@@ -25,10 +25,8 @@ const usuariosPost = async (req: Request, res: Response) => {
     // crear un usuario
     const usuario = new Usuario<UsuarioInterface>({nombre, correo, password, rol});
     // encriptar la contraseña
-    if ( password ) {
-      const salt: string = bcryptjs.genSaltSync(10);
-      usuario.password = bcryptjs.hashSync(password, salt);
-    }
+    const salt: string = bcryptjs.genSaltSync(10);
+    usuario.password = bcryptjs.hashSync(password, salt);
     // guardar en la BD
     await usuario.save();
     // respuesta
@@ -36,9 +34,29 @@ const usuariosPost = async (req: Request, res: Response) => {
 }
 // PUT
 const usuariosPut = (req: Request, res: Response) => {
-    res.json({
-      msg: 'PUT - API'
-    })
+  // obtener el ID del usuario desde la URL
+  const { id } = req.params;
+  // obtener el body del request
+  /*
+    Si la interfaz UsuarioInterface ya incluye la propiedad password y aún obtienes un error al intentar agregarla a usuarioRestoDatos, es probable que el problema esté en que TypeScript no reconoce que usuarioRestoDatos tiene la misma estructura que UsuarioInterface después de hacer la desestructuración. Esto ocurre porque la sintaxis de desestructuración crea un nuevo objeto con solo las propiedades restantes (correo, password y _id se extraen y no forman parte de usuarioRestoDatos).
+  */ 
+  /*
+    Solución 1: Hacer un "casting" del tipo de usuarioRestoDatos
+    Puedes indicar explícitamente que usuarioRestoDatos tiene el tipo UsuarioInterface usando un "casting" de tipo: as UsuarioInterface
+  */  
+  const { correo, password, _id, ...usuarioRestoDatos } = req.body as UsuarioInterface;
+  // validar si viene la password para cambiarla
+  if ( password ) {
+    // encriptar la contraseña
+    const salt: string = bcryptjs.genSaltSync(10);
+    (usuarioRestoDatos as UsuarioInterface).password = bcryptjs.hashSync(password, salt);
+  }
+  // Actualizar registro
+  const usuario = Usuario.findByIdAndUpdate( id, usuarioRestoDatos, {
+    new: true
+  });
+  //respuesta 
+  res.json( {usuario, id} );
 }
 // DELETE
 const usuariosDelete = (req: Request, res: Response) => {
