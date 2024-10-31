@@ -33,7 +33,7 @@ const usuariosPost = async (req: Request, res: Response) => {
     res.json(usuario);
 }
 // PUT
-const usuariosPut = (req: Request, res: Response) => {
+const usuariosPut = async (req: Request, res: Response) => {
   // obtener el ID del usuario desde la URL
   const { id } = req.params;
   // obtener el body del request
@@ -52,11 +52,11 @@ const usuariosPut = (req: Request, res: Response) => {
     (usuarioRestoDatos as UsuarioInterface).password = bcryptjs.hashSync(password, salt);
   }
   // Actualizar registro
-  const usuario = Usuario.findByIdAndUpdate( id, usuarioRestoDatos, {
+  const usuario = await Usuario.findByIdAndUpdate( id, usuarioRestoDatos, {
     new: true
   });
   //respuesta 
-  res.json( {usuario, id} );
+  res.json( usuario);
 }
 // DELETE
 const usuariosDelete = (req: Request, res: Response) => {
