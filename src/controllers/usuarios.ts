@@ -6,9 +6,10 @@ import Usuario from "../models/usuario";
 // Se debe importar request, reponse de @types/express
 //para que req.body sea reconocido
 import { Request, Response } from "express";
-// Interface de Usuario
-import { UsuarioInterface } from "../types/interfaces";
-
+// Interface de Usuario: UsuarioInterface
+// Id que viene en la URL de la API: RequestParamsId
+import {  RequestParamsId, 
+          UsuarioInterface } from "../types/interfaces";
 
 // GET
 const usuariosGet = (req: Request, res: Response) => {
@@ -17,7 +18,7 @@ const usuariosGet = (req: Request, res: Response) => {
     })
 }
 // POST
-const usuariosPost = async (req: Request, res: Response) => {
+const usuariosPost = async (req: Request<UsuarioInterface>, res: Response) => {
     //Obtener los datos del body
     // Utilizamos UsuarioInterface para decirle al objeto que debe tener esos types
     // se usa para asegurarse de que un objeto en tiempo de ejecución cumpla con esa estructura.
@@ -33,7 +34,7 @@ const usuariosPost = async (req: Request, res: Response) => {
     res.json(usuario);
 }
 // PUT
-const usuariosPut = async (req: Request, res: Response) => {
+const usuariosPut = async (req: Request<RequestParamsId>, res: Response) => {
   // obtener el ID del usuario desde la URL
   const { id } = req.params;
   // obtener el body del request
@@ -59,7 +60,13 @@ const usuariosPut = async (req: Request, res: Response) => {
   res.json( usuario);
 }
 // DELETE
-const usuariosDelete = (req: Request, res: Response) => {
+const usuariosDelete = (req: Request<RequestParamsId>, res: Response) => {
+    // obtener el ID del usuario
+    const { id } = req.params;
+    console.log(id);
+    
+
+    //respuesta 
     res.json({
       msg: 'DELETE - API'
     })
