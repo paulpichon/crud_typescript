@@ -39,11 +39,16 @@ const usuarioSchema = new Schema<UsuarioInterface>({
     }
 });
 // QUITAR __V Y EL PASSWORD DE LA RESPUESTA
-usuarioSchema.methods.toJSON = function() {
+usuarioSchema.methods.toJSON = function(): UsuarioInterface { 
     // Desestructuramos lo que no queremos que aparezca 
     const {password, __v, ...usuario} = this.toObject();
-    // retornamos lo que queremos ver en a respuesta
-    return usuario;
+    
+    // Creamos un nuevo objeto para devolver y evitamos modificar el original
+    // Object.assign es un método de JavaScript que se utiliza para copiar las propiedades de uno o más objetos de origen a un objeto destino. El objetivo principal de Object.assign es combinar objetos o hacer copias superficiales de ellos, útil para clonar objetos y evitar la mutación de los originales.
+    const usuarioFiltrado: UsuarioInterface = Object.assign({}, usuario);
+    // Retornamos le nuevo objeto sin password ni __v
+    return usuarioFiltrado;
+
 }
 
 // exports
