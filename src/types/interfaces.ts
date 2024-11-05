@@ -22,8 +22,14 @@ interface RolesUsuario {
     rol: 'SUPER_ADMIN_ROLE' | 'ADMIN_ROL' | 'VENTAS_ROL';
 }
 
+// Interface de id: este id es el que viene de las rutas PUT y DELETE
+interface RequestParamsId {
+    id: string;
+}
+
 // Exports
 export {
     UsuarioInterface,
-    RolesUsuario
+    RolesUsuario,
+    RequestParamsId
 }
