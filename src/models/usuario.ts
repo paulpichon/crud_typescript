@@ -38,6 +38,13 @@ const usuarioSchema = new Schema<UsuarioInterface>({
         defualt: true
     }
 });
+// QUITAR __V Y EL PASSWORD DE LA RESPUESTA
+usuarioSchema.methods.toJSON = function() {
+    // Desestructuramos lo que no queremos que aparezca 
+    const {password, __v, ...usuario} = this.toObject();
+    // retornamos lo que queremos ver en a respuesta
+    return usuario;
+}
 
 // exports
 export = model<UsuarioInterface>('Usuario', usuarioSchema)
