@@ -18,20 +18,29 @@ const usuariosGet = (req: Request, res: Response) => {
     })
 }
 // POST
-const usuariosPost = async (req: Request<UsuarioInterface>, res: Response) => {
-    //Obtener los datos del body
-    // Utilizamos UsuarioInterface para decirle al objeto que debe tener esos types
-    // se usa para asegurarse de que un objeto en tiempo de ejecución cumpla con esa estructura.
-    const {nombre, correo, password, rol}: UsuarioInterface = req.body;
-    // crear un usuario
-    const usuario = new Usuario<UsuarioInterface>({nombre, correo, password, rol});
-    // encriptar la contraseña
-    const salt: string = bcryptjs.genSaltSync(10);
-    usuario.password = bcryptjs.hashSync(password, salt);
-    // guardar en la BD
-    await usuario.save();
-    // respuesta
-    res.json(usuario);
+const usuariosPost = async (req: Request<UsuarioInterface>, res: Response): Promise<Response> => {
+    try {
+      
+      //Obtener los datos del body
+      // Utilizamos UsuarioInterface para decirle al objeto que debe tener esos types
+      // se usa para asegurarse de que un objeto en tiempo de ejecución cumpla con esa estructura.
+      const {nombre, correo, password, rol}: UsuarioInterface = req.body;
+      // crear un usuario
+      const usuario = new Usuario<UsuarioInterface>({nombre, correo, password, rol});
+      // encriptar la contraseña
+      const salt: string = bcryptjs.genSaltSync(10);
+      usuario.password = bcryptjs.hashSync(password, salt);
+      // guardar en la BD
+      await usuario.save();
+      // respuesta
+      return res.json(usuario);
+
+    } catch (error) {
+        console.error( error );
+        return res.status( 500 ).json({
+          msg: 'No se pudo crear el usuario'
+        });      
+    }
 }
 // PUT
 const usuariosPut = async (req: Request<RequestParamsId>, res: Response) => {
