@@ -43,30 +43,48 @@ const usuariosPost = async (req: Request<UsuarioInterface>, res: Response): Prom
     }
 }
 // PUT
-const usuariosPut = async (req: Request<RequestParamsId>, res: Response) => {
-  // obtener el ID del usuario desde la URL
-  const { id } = req.params;
-  // obtener el body del request
-  /*
-    Si la interfaz UsuarioInterface ya incluye la propiedad password y aún obtienes un error al intentar agregarla a usuarioRestoDatos, es probable que el problema esté en que TypeScript no reconoce que usuarioRestoDatos tiene la misma estructura que UsuarioInterface después de hacer la desestructuración. Esto ocurre porque la sintaxis de desestructuración crea un nuevo objeto con solo las propiedades restantes (correo, password y _id se extraen y no forman parte de usuarioRestoDatos).
-  */ 
-  /*
-    Solución 1: Hacer un "casting" del tipo de usuarioRestoDatos
-    Puedes indicar explícitamente que usuarioRestoDatos tiene el tipo UsuarioInterface usando un "casting" de tipo: as UsuarioInterface
-  */  
-  const { correo, password, _id, ...usuarioRestoDatos } = req.body as UsuarioInterface;
-  // validar si viene la password para cambiarla
-  if ( password ) {
-    // encriptar la contraseña
-    const salt: string = bcryptjs.genSaltSync(10);
-    (usuarioRestoDatos as UsuarioInterface).password = bcryptjs.hashSync(password, salt);
+const usuariosPut = async (req: Request<RequestParamsId>, res: Response): Promise<Response> => {
+  try {
+    
+    // obtener el ID del usuario desde la URL
+    const { id } = req.params;
+    // obtener el body del request
+    /*
+      Si la interfaz UsuarioInterface ya incluye la propiedad password y aún obtienes un error al intentar agregarla a usuarioRestoDatos, es probable que el problema esté en que TypeScript no reconoce que usuarioRestoDatos tiene la misma estructura que UsuarioInterface después de hacer la desestructuración. Esto ocurre porque la sintaxis de desestructuración crea un nuevo objeto con solo las propiedades restantes (correo, password y _id se extraen y no forman parte de usuarioRestoDatos).
+    */ 
+    /*
+      Solución 1: Hacer un "casting" del tipo de usuarioRestoDatos
+      Puedes indicar explícitamente que usuarioRestoDatos tiene el tipo UsuarioInterface usando un "casting" de tipo: as UsuarioInterface
+    */  
+    const { correo, password, _id, ...usuarioRestoDatos } = req.body as UsuarioInterface;
+    // validar si viene la password para cambiarla
+    if ( password ) {
+      // encriptar la contraseña
+      const salt: string = bcryptjs.genSaltSync(10);
+      (usuarioRestoDatos as UsuarioInterface).password = bcryptjs.hashSync(password, salt);
+    }
+    // Actualizar registro
+    const usuario = await Usuario.findByIdAndUpdate( id, usuarioRestoDatos, {
+      new: true
+    });
+    // verificar si el usuario existe
+    //  Antes de devolver la respuesta, se verifica si el usuario existe. Esto evita devolver un null si el usuario no se encontró.
+    if ( !usuario ) {
+      return res.status(404).json({ 
+        msg: 'El usuario no existe'
+      });
+    }
+    //respuesta 
+    return res.json( usuario);
+
+  } catch (error) {
+    // Manejo de errores
+    console.error( error );
+    return res.status( 500 ).json({
+      msg: 'No se pudo actualizar el usuario'
+    });
+    
   }
-  // Actualizar registro
-  const usuario = await Usuario.findByIdAndUpdate( id, usuarioRestoDatos, {
-    new: true
-  });
-  //respuesta 
-  res.json( usuario);
 }
 // DELETE
 // El tipo de retorno se especifica como Promise<Response>, lo cual proporciona mayor claridad.
