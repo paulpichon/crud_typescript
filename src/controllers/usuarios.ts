@@ -60,16 +60,35 @@ const usuariosPut = async (req: Request<RequestParamsId>, res: Response) => {
   res.json( usuario);
 }
 // DELETE
-const usuariosDelete = (req: Request<RequestParamsId>, res: Response) => {
-    // obtener el ID del usuario
-    const { id } = req.params;
-    console.log(id);
-    
+// El tipo de retorno se especifica como Promise<Response>, lo cual proporciona mayor claridad.
+const usuariosDelete = async (req: Request<RequestParamsId>, res: Response): Promise<Response> => {
+    try {
+      // obtener el ID del usuario
+      const { id } = req.params;
+      // buscar el usuario y eliminarlo
+      // en lugar de eliminar fisicamente el registro solo le cambiamos el estatus = 0
+      const usuario = await Usuario.findByIdAndUpdate(id, {estado: false}, {
+        new: true
+      });
 
-    //respuesta 
-    res.json({
-      msg: 'DELETE - API'
-    })
+      // Verificar si el usuario existe
+      //  Antes de devolver la respuesta, se verifica si el usuario existe. Esto evita devolver un null si el usuario no se encontró.
+      if (!usuario) {
+        return res.status(404).json({ 
+          msg: 'Usuario no encontrado' 
+        });
+      }
+
+      //respuesta con el usuario eliminado
+      return res.json( usuario );
+
+    } catch (error) {
+      // Manejo de errores  
+      console.error( error ); 
+      return res.status(500).json({
+        msg: 'Error al eliminar el usuario'
+      });
+    }
 }
 
 
