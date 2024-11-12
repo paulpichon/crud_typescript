@@ -35,7 +35,7 @@ const usuarioSchema = new Schema<UsuarioInterface>({
     },
     estado: {
         type: Boolean,
-        defualt: true
+        default: true
     }
 });
 // QUITAR __V Y EL PASSWORD DE LA RESPUESTA
