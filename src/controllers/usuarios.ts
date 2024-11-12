@@ -12,15 +12,41 @@ import {  RequestParamsId,
           UsuarioInterface } from "../types/interfaces";
 
 // GET
-const usuariosGet = (req: Request, res: Response) => {
-    res.json({
-      msg: 'Get - API'
+const usuariosGet = async (req: Request<UsuarioInterface>, res: Response): Promise<Response> => {
+    // params
+    // const { limite = 5, desde = 0 } = req.query;
+    // EXPLICACION
+    // Explicación
+    // parseInt(req.query.limite as string, 10): Convierte el valor de limite a un número entero en base decimal. Usamos el operador as string para que TypeScript trate req.query.limite como un string, ya que req.query tiene valores de tipo string | undefined.
+    // || 5: Define un valor por defecto en caso de que el valor en req.query.limite sea undefined o no pueda convertirse a un número.
+    // https://chatgpt.com/c/6733bb2e-19bc-8002-919d-e6cd812be660
+    const limite: number = parseInt( req.query.limite as string, 10) || 5;
+    // DESDE
+    const desde: number = parseInt( req.query.desde as string) || 0;
+    // tipado por inferencia
+    const query = { estado: true };
+    // traer los registros
+    // Promise.ALL
+    // Revise los tipos de datos devuelto: total y usuarios con typeof, : [number, object]
+    // :[string, number] ---> https://chatgpt.com/c/6733bb2e-19bc-8002-919d-e6cd812be660
+    // https://www.typescriptlang.org/docs/handbook/2/objects.html#tuple-types
+    // tuple type: [number, object]
+    const [total, usuarios]: [number, object] = await Promise.all([
+      Usuario.countDocuments( query ),
+      Usuario.find( query )
+      .skip( desde )
+      .limit( limite )
+    ]);
+
+    // Respuesta
+    return res.json({
+      total,
+      usuarios
     })
 }
 // POST
 const usuariosPost = async (req: Request<UsuarioInterface>, res: Response): Promise<Response> => {
-    try {
-      
+    try { 
       //Obtener los datos del body
       // Utilizamos UsuarioInterface para decirle al objeto que debe tener esos types
       // se usa para asegurarse de que un objeto en tiempo de ejecución cumpla con esa estructura.
@@ -117,8 +143,6 @@ const usuariosDelete = async (req: Request<RequestParamsId>, res: Response): Pro
       });
     }
 }
-
-
 export {
     usuariosGet,
     usuariosPost,

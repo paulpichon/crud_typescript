@@ -64,7 +64,14 @@ router.put('/:id', [
     validarCampos,
 ], usuariosPut);
 // DELETE
-router.delete('/:id', usuariosDelete);
+router.delete('/:id', [
+    // validr el ID
+    check('id', 'El ID no es valido').isMongoId(),
+    // validar que el ID de usuario exista en la BD
+    check('id').custom( existeIdUsuario ),
+    // Validar los campos
+    validarCampos,
+], usuariosDelete);
 
 
 // exports
