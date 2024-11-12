@@ -17,6 +17,8 @@ import { validarCorreo } from "../helpers/validar-correo-usuario";
 import { validarCampos } from "../helpers/validar-campos";
 // Validar un rol de usuario vs la BD
 import { esRolValido } from "../helpers/validar-rol-usuario";
+// Validar el ID del usuario exxista en la BD
+import { existeIdUsuario } from "../helpers/validar-id-usuario";
 
 // GET
 router.get('/', usuariosGet);
@@ -39,6 +41,10 @@ router.post('/', [
 ], usuariosPost);
 // PUT
 router.put('/:id', [
+    // validr el ID
+    check('id', 'El ID no es valido').isMongoId(),
+    // validar que el ID de usuario exista en la BD
+    check('id').custom( existeIdUsuario ),
     // Validar el nombre, no este vacio y sea string
     check('nombre', 'El nombre es obligatorio').optional().trim().notEmpty().escape(),
     // Validar apellidos, no este vacio y sea string
