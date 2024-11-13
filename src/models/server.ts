@@ -18,6 +18,8 @@ export class Server {
     private port: number;
     // Usuarios Path
     private usuariosPath: string;
+    // Auth Path
+    private authPath: string;
 
     constructor( options: Options) {
         // desestructuramos de options
@@ -26,6 +28,8 @@ export class Server {
         this.port = port;
         // Path de usuarios
         this.usuariosPath = '/api/usuarios';
+        // Authentication
+        this.authPath = '/api/auth';
 
 
 
@@ -52,6 +56,8 @@ export class Server {
     }
     // Metodos
     routes() {
+        // Auth
+        this.app.use(this.authPath, require('../routes/auth'));
         // Usuarios
         this.app.use(this.usuariosPath, require('../routes/usuarios'));
     }
