@@ -21,7 +21,14 @@ import { esRolValido } from "../helpers/validar-rol-usuario";
 import { existeIdUsuario } from "../helpers/validar-id-usuario";
 
 // GET
-router.get('/', usuariosGet);
+router.get('/', [
+    //Validar que sea de tipo numerico 
+    check('limite', 'El parametro LIMITE debe ser de tipo NUMBER').optional().isNumeric(),
+    // validar que sea de tipo numerico
+    check('desde', 'El parametro DESDE debe ser de tipo NUMBER').optional().isNumeric(),
+    // Validar los campos
+    validarCampos,
+], usuariosGet);
 // POST
 router.post('/', [
     // Validar el nombre, no este vacio y sea string
