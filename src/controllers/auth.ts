@@ -6,6 +6,8 @@ import bcryptjs from "bcryptjs";
 import { UsuarioInterface } from "../types/interfaces";
 // Usuario model
 import Usuario from "../models/usuario";
+// Generar el JWT
+import { generarJWT } from "../helpers/generar-jwt";
 
 // POST
 const login = async ( req: Request<UsuarioInterface>, res: Response) => {
@@ -36,11 +38,15 @@ const login = async ( req: Request<UsuarioInterface>, res: Response) => {
                 msg: `Correo/password incorrectos: password incorrecto`
             });
         }
+        console.log(typeof usuario, "id");
+        
         // generar el JWT
+        // Uso de _id: Siempre asegúrate de verificar que _id no sea UNDEFINED antes de usarlo. Si estás seguro de que siempre tendrá valor, usa ! como se muestra.
+        const JWT = await generarJWT(usuario._id!); // Usa `!` porque _id no será undefined aquí.
 
         // respuesta
         return res.json({
-            correo, password
+            usuario
         });
     } catch (error) {
         return res.status(500).json({
