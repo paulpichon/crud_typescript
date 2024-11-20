@@ -37,18 +37,18 @@ const login = async ( req: Request<UsuarioInterface>, res: Response) => {
             return res.status(404).json({
                 msg: `Correo/password incorrectos: password incorrecto`
             });
-        }
-        console.log(typeof usuario, "id");
-        
+        }        
         // generar el JWT
         // Uso de _id: Siempre asegúrate de verificar que _id no sea UNDEFINED antes de usarlo. Si estás seguro de que siempre tendrá valor, usa ! como se muestra.
-        const JWT = await generarJWT(usuario._id!); // Usa `!` porque _id no será undefined aquí.
+        const token = await generarJWT(usuario._id!); // Usa `!` porque _id no será undefined aquí.
 
         // respuesta
         return res.json({
-            usuario
+            usuario,
+            token
         });
     } catch (error) {
+        console.log( error );
         return res.status(500).json({
             msg: 'Hubo un error al procesar la solicitud'
         });
