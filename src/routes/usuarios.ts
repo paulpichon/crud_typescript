@@ -19,6 +19,8 @@ import { validarCampos } from "../helpers/validar-campos";
 import { esRolValido } from "../helpers/validar-rol-usuario";
 // Validar el ID del usuario exxista en la BD
 import { existeIdUsuario } from "../helpers/validar-id-usuario";
+// Validar el JWT
+import { validarJWT } from "../middlewares/validar-jwt";
 
 // GET
 router.get('/', [
@@ -72,6 +74,8 @@ router.put('/:id', [
 ], usuariosPut);
 // DELETE
 router.delete('/:id', [
+    // Validar JWT para poder borrar un documento/registro
+    validarJWT,
     // validr el ID
     check('id', 'El ID no es valido').isMongoId(),
     // validar que el ID de usuario exista en la BD
