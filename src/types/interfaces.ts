@@ -20,6 +20,7 @@ interface UsuarioInterface {
 // Agregar una propiedad nueva al Request de Express
 // Esto es parte poara validacion del token
 // Explicacion del codigo de abajo: https://chatgpt.com/c/673e3cd1-cca8-8002-8e06-e1bd6968db4d
+// No hace falta exportarlo ya que con "global" se hace referencia que se puede usar donde sea dentro del proyecto
 declare global {
     namespace Express {
       interface Request {
