@@ -10,7 +10,7 @@ const generarJWT = ( uuid: mongoose.Schema.Types.ObjectId ): Promise<string> => 
     // crear el TOKEN
     return new Promise( (resolve, reject) => {
         jwt.sign(payload, (process.env.PRIVATEORPUBLICKEY as string), {
-            expiresIn: '1h'
+            expiresIn: 300 //5 minutos: 1 minuto = 60s
         },
         function(err, token) {
             if ( err ) {
