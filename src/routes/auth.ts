@@ -7,7 +7,7 @@ import { check } from "express-validator";
 // login
 import { login } from "../controllers/auth";
 // express validator
-import { validarCampos } from "../helpers/validar-campos";
+import { validarCampos } from "../middlewares/validar-campos";
 
 // POST
 router.post('/login', [

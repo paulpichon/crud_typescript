@@ -131,9 +131,14 @@ const usuariosDelete = async (req: Request<RequestParamsId>, res: Response): Pro
           msg: 'Usuario no encontrado' 
         });
       }
-
+      // usuario autenticado
+      const usuarioAutenticado = req.usuario;
+            
       //respuesta con el usuario eliminado
-      return res.json( usuario );
+      return res.json({
+        usuario,
+        usuarioAutenticado
+      });
 
     } catch (error) {
       // Manejo de errores  

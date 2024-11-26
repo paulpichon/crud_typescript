@@ -14,7 +14,7 @@ import {
 // validar correo de usuario 
 import { validarCorreo } from "../helpers/validar-correo-usuario";
 //helpers 
-import { validarCampos } from "../helpers/validar-campos";
+import { validarCampos } from "../middlewares/validar-campos";
 // Validar un rol de usuario vs la BD
 import { esRolValido } from "../helpers/validar-rol-usuario";
 // Validar el ID del usuario exxista en la BD
