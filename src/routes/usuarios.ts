@@ -21,8 +21,9 @@ import { esRolValido } from "../helpers/validar-rol-usuario";
 import { existeIdUsuario } from "../helpers/validar-id-usuario";
 // Validar el JWT
 import { validarJWT } from "../middlewares/validar-jwt";
-// Validar Roles de usuario autenticado
-import { validarRoles } from "../middlewares/validar-roles";
+// Validar Rol de usuario autenticado
+import { esAdminRol, 
+        validarRoles } from "../middlewares/validar-roles";
 
 // GET
 router.get('/', [
@@ -79,7 +80,8 @@ router.delete('/:id', [
     // Validar JWT para poder borrar un documento/registro
     validarJWT,
     // Validar roles de usuario autenticado
-    validarRoles,
+    // esAdminRol,
+    validarRoles('SUPER_ADMIN_ROLE', 'ADMIN_ROLE'),
     // validr el ID
     check('id', 'El ID no es valido').isMongoId(),
     // validar que el ID de usuario exista en la BD
