@@ -5,7 +5,8 @@ const router = Router();
 // expree validator
 import { check } from "express-validator";
 // login
-import { login } from "../controllers/auth";
+// googleSignIn
+import { googleSingIn, login } from "../controllers/auth";
 // express validator
 import { validarCampos } from "../middlewares/validar-campos";
 
@@ -20,6 +21,8 @@ router.post('/login', [
     // Validar los campos
     validarCampos,
 ], login);
+// GoogleSignIn
+router.post('/google-sign-in', googleSingIn);
 
 // exports
 module.exports = router;

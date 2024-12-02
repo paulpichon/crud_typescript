@@ -54,8 +54,14 @@ const login = async ( req: Request<UsuarioInterface>, res: Response) => {
         });
     }
 }
-
+// Google sign In
+const googleSingIn = (req: Request, res: Response ) => {
+    res.json({
+        msg: 'Google Sign In'
+    });
+}
 
 export {
-    login
+    login,
+    googleSingIn
 }
