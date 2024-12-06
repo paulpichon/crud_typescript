@@ -56,6 +56,10 @@ const login = async ( req: Request<UsuarioInterface>, res: Response) => {
 }
 // Google sign In
 const googleSingIn = (req: Request, res: Response ) => {
+    // token
+    const { id_token } = req.body;
+
+    // Respuesta
     res.json({
         msg: 'Google Sign In'
     });
