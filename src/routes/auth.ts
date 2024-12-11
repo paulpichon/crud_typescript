@@ -22,7 +22,11 @@ router.post('/login', [
     validarCampos,
 ], login);
 // GoogleSignIn
-router.post('/google-sign-in', googleSingIn);
+router.post('/google-sign-in', [
+    check('id_token', 'id_token es necesario').notEmpty(),
+    // Validar los campos
+    validarCampos
+], googleSingIn);
 
 // exports
 module.exports = router;

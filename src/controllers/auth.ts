@@ -8,6 +8,8 @@ import { UsuarioInterface } from "../types/interfaces";
 import Usuario from "../models/usuario";
 // Generar el JWT
 import { generarJWT } from "../helpers/generar-jwt";
+// Google Verify
+import { verify } from "../helpers/google-verify";
 
 // POST
 const login = async ( req: Request<UsuarioInterface>, res: Response) => {
@@ -55,14 +57,28 @@ const login = async ( req: Request<UsuarioInterface>, res: Response) => {
     }
 }
 // Google sign In
-const googleSingIn = (req: Request, res: Response ) => {
+const googleSingIn = async (req: Request, res: Response ) => {
     // token
-    const { id_token } = req.body;
+    const { id_token } = req.body as { id_token: string };
+    // console.log( typeof id_token);
+    
 
-    // Respuesta
-    res.json({
-        msg: 'Google Sign In'
-    });
+    try {
+    
+        const googleUser = await verify( id_token );
+        console.log( googleUser );
+        
+        // Respuesta
+        res.json({
+            msg: 'Google Sign In',
+            id_token
+        });
+    } catch (error) {
+        res.status(400).json({
+            ok: false,
+            msg: 'El token no se pudo vereficar'
+        });
+    }
 }
 
 export {

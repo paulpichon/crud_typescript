@@ -26,12 +26,23 @@
     <!-- Funcion -->
     <script>
         function handleCredentialResponse(response) {
-           // decodeJwtResponse() is a custom function defined by you
-           // to decode the credential response.
-        //    const responsePayload = decodeJwtResponse(response.credential);
-            // Google token: ID_TOKEN
-           console.log( 'id_token', response.credential );
-           
+            const body = { id_token: response.credential };
+            console.log(body, 'body');
+            
+        //    console.log( 'id_token', response.credential );
+            fetch('http://localhost:3000/api/auth/google-sign-in', {
+                method: 'POST',
+                headers: {
+                    'Content-Type' : 'application/json'
+                },
+                body: JSON.stringify( body )
+            })
+            .then( resp => resp.json() )
+            .then( resp => {
+                console.log( resp );
+            })
+            .catch( console.warn )     
+
         }
       </script>
 </body>
