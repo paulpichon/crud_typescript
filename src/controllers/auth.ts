@@ -3,7 +3,7 @@ import { Request, Response } from "express";
 // Bcryptjs
 import bcryptjs from "bcryptjs";
 // Interface
-import { UsuarioInterface } from "../types/interfaces";
+import { UsuarioInterface, RolesUsuario } from "../types/interfaces";
 // Usuario model
 import Usuario from "../models/usuario";
 // Generar el JWT
@@ -64,19 +64,49 @@ const googleSingIn = async (req: Request, res: Response ) => {
     
 
     try {
-    
-        const googleUser = await verify( id_token );
-        console.log( googleUser );
+        // desestructuramos de id_token
+        const { nombre, correo, img } = await verify( id_token );
+        // verificar el usuario
+        let usuario = await Usuario.findOne({ correo });
         
+        // validar la existencia del usuario en la BD
+        if ( !usuario ) {
+            // creamos la data del usuario
+            // Usamos UsuarioInterface para que los datos coincidan con nuestra interface
+            const data: UsuarioInterface  = {
+                nombre,
+                correo,
+                password: ':p',
+                rol: 'ADMIN_ROLE',
+                img,
+                google: true
+            }
+            // creamos el usuario
+            usuario = new Usuario( data );
+            // guardalo en la BD
+            await usuario.save();
+        }
+        // en caso de que el usuario este ya registrado en la BD, pero no pueda iniciar sesion
+        // mostramos un mensaje, ya que podria estar bloqueado el usuario
+        if ( !usuario.estado ) {
+            return res.json({
+                msg: 'Hable con un administrador, usuario bloqueado',
+            });
+        }
+        // generar el JWT
+        // Uso de _id: Siempre asegúrate de verificar que _id no sea UNDEFINED antes de usarlo. Si estás seguro de que siempre tendrá valor, usa ! como se muestra.
+        const token = await generarJWT(usuario._id); // Usa `!` porque _id no será undefined aquí.
+
         // Respuesta
         res.json({
-            msg: 'Google Sign In',
-            id_token
+            usuario,
+            token
         });
     } catch (error) {
+        console.log( error );
+        
         res.status(400).json({
-            ok: false,
-            msg: 'El token no se pudo vereficar'
+            msg: 'Token de google no es valido'
         });
     }
 }
