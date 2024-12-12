@@ -8,7 +8,7 @@ const esRolValido = async ( rol: string = ''): Promise<void> => {
     // console.log(typeof roles, "roles usuario");
     if ( !existeRol ) {
         // lanzamos el error
-        throw new Error(`El ROL: ${ rol } no existe en la BD: {SUPER_ADMIN_ROLE, ADMIN_ROL, VENTAS_ROL}`);
+        throw new Error(`El ROL: ${ rol } no existe en la BD: {SUPER_ADMIN_ROLE, ADMIN_ROLE, VENTAS_ROLE}`);
     }
 }
 // exports
