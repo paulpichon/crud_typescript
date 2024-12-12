@@ -27,7 +27,6 @@
     <script>
         function handleCredentialResponse(response) {
             const body = { id_token: response.credential };
-            console.log(body, 'body');
             
         //    console.log( 'id_token', response.credential );
             fetch('http://localhost:3000/api/auth/google-sign-in', {
