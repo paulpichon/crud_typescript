@@ -13,7 +13,7 @@ interface UsuarioInterface {
     img?: string;
     // En TypeScript, esto se denomina string union type.
     // Significa que la propiedad "rol" sólo puede ser uno de los 2 string: 'ADMIN_ROL' o 'VENTAS_ROL'.
-    rol: 'SUPER_ADMIN_ROLE' | 'ADMIN_ROL' | 'VENTAS_ROL';
+    rol: 'SUPER_ADMIN_ROLE' | 'ADMIN_ROLE' | 'VENTAS_ROLE';
     estado?: boolean;
 }
 // Request
@@ -30,7 +30,7 @@ declare global {
 }
 // Interface de Roles
 interface RolesUsuario {
-    rol: 'SUPER_ADMIN_ROLE' | 'ADMIN_ROL' | 'VENTAS_ROL';
+    rol: 'SUPER_ADMIN_ROLE' | 'ADMIN_ROLE' | 'VENTAS_ROLE';
 }
 // Interface de id: este id es el que viene de las rutas PUT y DELETE
 interface RequestParamsId {
