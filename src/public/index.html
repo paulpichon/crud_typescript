@@ -22,6 +22,11 @@
         data-logo_alignment="left">
     </div>
 
+    <!-- botton para cerrar la sesion -->
+     <button id="google_signout">
+        Cerrar sesion
+     </button>
+
     <script src="https://accounts.google.com/gsi/client" async></script>
     <!-- Funcion -->
     <script>
@@ -39,10 +44,23 @@
             .then( resp => resp.json() )
             .then( resp => {
                 console.log( resp );
+                localStorage.setItem('email', resp.usuario.correo)
             })
             .catch( console.warn )     
-
         }
+
+        // funcion cerrar funcion
+        const button = document.querySelector('#google_signout');
+        button.onclick = () => {
+            console.log( google.accounts.id );
+            google.accounts.id.disableAutoSelect();
+
+            google.accounts.id.revoke( localStorage.getItem('email'), done => {
+                localStorage.clear();
+                location.reload();
+            });
+        }
+
       </script>
 </body>
 </html>
